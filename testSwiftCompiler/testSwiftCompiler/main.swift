@@ -13,8 +13,7 @@ enum Token {
     case curlyBlace(CurlyBlaceType)
     case squareBlacket(SquareBlacketType)
     case reservedWord(ReservedWordType)
-    case arrow // `->`
-    case eof
+    case other(OtherType)
     
     enum BinaryOperatorType {
         case plus // `+`
@@ -22,7 +21,6 @@ enum Token {
         case asterisk // `*`
         case slash // `/`
         case percent // `%`
-        case equal // `=`
     }
     
     enum RoundBlacketType {
@@ -51,6 +49,18 @@ enum Token {
         case `case`
         case `continue`
         case `break`
+        case `while`
+    }
+    
+    enum OtherType {
+        case equal // `=`
+        case comma // `,`
+        case period // `.`
+        case multiEqual // `==`
+        case plusEqual // `+=`
+        case arrow // `->`
+        case colon // `:`
+        case eof
     }
 }
 
@@ -98,7 +108,7 @@ func tokenize(input: String) -> [Token] {
             
             // -> を考慮して
             if _currentChar == ">" {
-                tokens.append(.arrow)
+                tokens.append(.other(.arrow))
                 position = input.index(after: position)
                 
             } else {
@@ -111,16 +121,42 @@ func tokenize(input: String) -> [Token] {
             position = input.index(after: position)
             
         case "/":
-            tokens.append(.binaryOperator(.slash))
             position = input.index(after: position)
+            
+            let _currentChar = input[position]
+            // //(コメントアウト) を考慮して
+            if _currentChar == "/" {
+                var endOfCommentOutPosition = position
+                
+                while endOfCommentOutPosition < input.endIndex {
+                    if input[endOfCommentOutPosition] == "\n" {
+                        break
+                    }
+                    endOfCommentOutPosition = input.index(after: endOfCommentOutPosition)
+                }
+                position = input.index(after: endOfCommentOutPosition)
+                
+            } else {
+                tokens.append(.binaryOperator(.slash))
+            }
             
         case "%":
             tokens.append(.binaryOperator(.percent))
             position = input.index(after: position)
             
         case "=":
-            tokens.append(.binaryOperator(.equal))
             position = input.index(after: position)
+            
+            let _currentChar = input[position]
+            
+            // == を考慮して
+            if _currentChar == "=" {
+                tokens.append(.other(.multiEqual))
+                position = input.index(after: position)
+                
+            } else {
+                tokens.append(.other(.equal))
+            }
             
         case "{":
             tokens.append(.curlyBlace(.left))
@@ -144,6 +180,18 @@ func tokenize(input: String) -> [Token] {
             
         case ")":
             tokens.append(.roundBlacket(.right))
+            position = input.index(after: position)
+            
+        case ":":
+            tokens.append(.other(.colon))
+            position = input.index(after: position)
+            
+        case ",":
+            tokens.append(.other(.comma))
+            position = input.index(after: position)
+            
+        case ".":
+            tokens.append(.other(.period))
             position = input.index(after: position)
             
         default:
@@ -202,6 +250,10 @@ func tokenize(input: String) -> [Token] {
             case "break":
                 tokens.append(.reservedWord(.break))
                 position = currentIdentifierPoistion
+            
+            case "while":
+                tokens.append(.reservedWord(.while))
+                position = currentIdentifierPoistion
                 
             default:
                 tokens.append(.identifier(identifier))
@@ -211,7 +263,7 @@ func tokenize(input: String) -> [Token] {
         }
     }
     
-    tokens.append(.eof)
+    tokens.append(.other(.eof))
     
     return tokens
 }
