@@ -155,58 +155,58 @@ func tokenize(input: String) -> [Token] {
                 
                 if _currentCharacter.isLetter || _currentCharacter.isNumber || _currentCharacter == "_" {
                     identifier.append(_currentCharacter)
+                    currentIdentifierPoistion = input.index(after: currentIdentifierPoistion)
                 } else {
                     break
                 }
-                
-                currentIdentifierPoistion = input.index(after: currentIdentifierPoistion)
             }
             
             switch identifier {
                 
             case "let":
                 tokens.append(.reservedWord(.let))
-                position = input.index(after: currentIdentifierPoistion)
+                position = currentIdentifierPoistion
                 
             case "var":
                 tokens.append(.reservedWord(.var))
-                position = input.index(after: currentIdentifierPoistion)
+                position = currentIdentifierPoistion
                 
             case "func":
                 tokens.append(.reservedWord(.func))
-                position = input.index(after: currentIdentifierPoistion)
+                position = currentIdentifierPoistion
                 
             case "return":
                 tokens.append(.reservedWord(.return))
-                position = input.index(after: currentIdentifierPoistion)
+                position = currentIdentifierPoistion
                 
             case "if":
                 tokens.append(.reservedWord(.if))
-                position = input.index(after: currentIdentifierPoistion)
+                position = currentIdentifierPoistion
                 
             case "else":
                 tokens.append(.reservedWord(.else))
-                position = input.index(after: currentIdentifierPoistion)
+                position = currentIdentifierPoistion
                 
             case "enum":
                 tokens.append(.reservedWord(.enum))
-                position = input.index(after: currentIdentifierPoistion)
+                position = currentIdentifierPoistion
                 
             case "case":
                 tokens.append(.reservedWord(.case))
-                position = input.index(after: currentIdentifierPoistion)
+                position = currentIdentifierPoistion
                 
             case "continue":
                 tokens.append(.reservedWord(.continue))
-                position = input.index(after: currentIdentifierPoistion)
+                position = currentIdentifierPoistion
                 
             case "break":
                 tokens.append(.reservedWord(.break))
-                position = input.index(after: currentIdentifierPoistion)
+                position = currentIdentifierPoistion
                 
             default:
                 tokens.append(.identifier(identifier))
-                position = input.index(after: currentIdentifierPoistion)
+                position = currentIdentifierPoistion
+                
             }
         }
     }
