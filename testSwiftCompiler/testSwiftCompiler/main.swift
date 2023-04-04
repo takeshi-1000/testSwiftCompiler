@@ -14,6 +14,7 @@ enum Token {
     case squareBlacket(SquareBlacketType)
     case reservedWord(ReservedWordType)
     case arrow // `->`
+    case eof
     
     enum BinaryOperatorType {
         case plus // `+`
@@ -209,6 +210,8 @@ func tokenize(input: String) -> [Token] {
             }
         }
     }
+    
+    tokens.append(.eof)
     
     return tokens
 }
