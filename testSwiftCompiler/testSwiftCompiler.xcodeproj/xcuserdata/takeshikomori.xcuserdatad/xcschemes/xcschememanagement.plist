@@ -7,12 +7,25 @@
 		<key>testSwiftCompiler.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>0</integer>
+			<integer>1</integer>
 		</dict>
 		<key>unitTest.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>1</integer>
+			<integer>0</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>FB6FB37E29DB765C003DE30D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FB6FB38E29DB76A3003DE30D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>

@@ -5,7 +5,7 @@
 //  Created by Takeshi Komori on 2023/04/04.
 //
 
-enum Token {
+enum Token: Equatable {
     case number(Int)
     case identifier(String)
     case binaryOperator(BinaryOperatorType)
@@ -95,7 +95,7 @@ func tokenize(input: String) -> [Token] {
             }
             
             tokens.append(.number(Int(numberStr)!))
-            position = input.index(after: currentNumberStrPoistion)
+            position = currentNumberStrPoistion
             
         case "+":
             tokens.append(.binaryOperator(.plus))
