@@ -53,15 +53,96 @@ final class UnitTest: XCTestCase {
         }
         
         XCTContext.runActivity(named: "reservedWord") { _ in
+            let sampleCode = """
+                // `let`
+                let test = 10
+
+                // `var`
+                var test2 = 12
+
+                // `if`
+                if test < 10 {
+                  print(test)
+
+                // `else`
+                } else {
+                  print(test2)
+                }
+
+                // `func`
+                func testMethod() -> [Int] {
+
+                    // `return`
+                    return [10]
+                }
+
+                // `enum`
+                enum Hoge {
+ 
+                // `case`
+                   case test1
+                   case test2
+                }
+
+                // `while`
+                while test2 < 20 {
+
+                  if test2 == 5 {
+
+                     // `break`
+                     break
+                  } else {
+                     test2 += 1
+
+                     // `continue`
+                     continue
+                  }
+                }
+"""
+            let expected: [Token] = [
+                // `let`
+                .reservedWord(.let), .identifier("test"), .other(.equal), .number(10),
+                // `var`
+                .reservedWord(.var), .identifier("test2"), .other(.equal), .number(12),
+                // `if`
+                .reservedWord(.if), .identifier("test"), .comparativeOperator(.less), .number(10), .curlyBlace(.left),
+                .identifier("print"), .roundBlacket(.left), .identifier("test"), .roundBlacket(.right),
+                // ` else`
+                .curlyBlace(.right), .reservedWord(.else), .curlyBlace(.left),
+                .identifier("print"), .roundBlacket(.left), .identifier("test2"), .roundBlacket(.right),
+                .curlyBlace(.right),
+                // `func`
+                .reservedWord(.func), .identifier("testMethod"), .roundBlacket(.left), .roundBlacket(.right), .other(.arrow), .squareBlacket(.left), .identifier("Int"), .squareBlacket(.right), .curlyBlace(.left),
+                // `return`
+                .reservedWord(.return), .squareBlacket(.left), .number(10), .squareBlacket(.right),
+                .curlyBlace(.right),
+                // `enum`
+                .reservedWord(.enum), .identifier("Hoge"), .curlyBlace(.left),
+                // `case`
+                .reservedWord(.case), .identifier("test1"),
+                .reservedWord(.case), .identifier("test2"),
+                .curlyBlace(.right),
+                // `while`
+                .reservedWord(.while), .identifier("test2"), .comparativeOperator(.less), .number(20), .curlyBlace(.left),
+                .reservedWord(.if), .identifier("test2"), .other(.multiEqual), .number(5), .curlyBlace(.left),
+                // `break`
+                .reservedWord(.break),
+                .curlyBlace(.right), .reservedWord(.else), .curlyBlace(.left),
+                .identifier("test2"), .other(.plusEqual), .number(1),
+                // `continue`
+                .reservedWord(.continue),
+                .curlyBlace(.right), .curlyBlace(.right),
+                .other(.eof)
+            ]
+            
+            let tokens = tokenize(input: sampleCode)
+            print("tokens \(tokens.count), expected \(expected.count)")
+            XCTAssertEqual(tokens.count, expected.count)
+            XCTAssertEqual(tokens, expected)
             
         }
         
-        XCTContext.runActivity(named: "arrow") { _ in
-            
-        }
-        
-        XCTContext.runActivity(named: "eof") { _ in
-            
+        XCTContext.runActivity(named: "other") { _ in
         }
     }
 }
