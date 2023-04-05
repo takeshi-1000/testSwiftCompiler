@@ -9,6 +9,7 @@ enum Token: Equatable {
     case number(Int)
     case identifier(String)
     case binaryOperator(BinaryOperatorType)
+    case comparativeOperator(ComparativeOperatorType)
     case roundBlacket(RoundBlacketType)
     case curlyBlace(CurlyBlaceType)
     case squareBlacket(SquareBlacketType)
@@ -21,6 +22,11 @@ enum Token: Equatable {
         case asterisk // `*`
         case slash // `/`
         case percent // `%`
+    }
+    
+    enum ComparativeOperatorType {
+        case greter // `>`
+        case less // `<`
     }
     
     enum RoundBlacketType {
@@ -54,12 +60,12 @@ enum Token: Equatable {
     
     enum OtherType {
         case equal // `=`
-        case comma // `,`
-        case period // `.`
         case multiEqual // `==`
         case plusEqual // `+=`
         case arrow // `->`
         case colon // `:`
+        case comma // `,`
+        case period // `.`
         case eof
     }
 }
@@ -98,15 +104,25 @@ func tokenize(input: String) -> [Token] {
             position = currentNumberStrPoistion
             
         case "+":
-            tokens.append(.binaryOperator(.plus))
+            // `+=` を考慮して
             position = input.index(after: position)
+            
+            let _currentChar = input[position]
+            
+            // `+=` を考慮して
+            if _currentChar == "=" {
+                tokens.append(.other(.plusEqual))
+                position = input.index(after: position)
+            } else {
+                tokens.append(.binaryOperator(.plus))
+            }
             
         case "-":
             position = input.index(after: position)
             
             let _currentChar = input[position]
             
-            // -> を考慮して
+            // `->` を考慮して
             if _currentChar == ">" {
                 tokens.append(.other(.arrow))
                 position = input.index(after: position)
@@ -124,7 +140,7 @@ func tokenize(input: String) -> [Token] {
             position = input.index(after: position)
             
             let _currentChar = input[position]
-            // //(コメントアウト) を考慮して
+            // `//`(コメントアウト) を考慮して
             if _currentChar == "/" {
                 var endOfCommentOutPosition = position
                 
@@ -149,7 +165,7 @@ func tokenize(input: String) -> [Token] {
             
             let _currentChar = input[position]
             
-            // == を考慮して
+            // `==` を考慮して
             if _currentChar == "=" {
                 tokens.append(.other(.multiEqual))
                 position = input.index(after: position)
@@ -192,6 +208,14 @@ func tokenize(input: String) -> [Token] {
             
         case ".":
             tokens.append(.other(.period))
+            position = input.index(after: position)
+            
+        case ">":
+            tokens.append(.comparativeOperator(.greter))
+            position = input.index(after: position)
+            
+        case "<":
+            tokens.append(.comparativeOperator(.less))
             position = input.index(after: position)
             
         default:
