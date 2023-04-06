@@ -19,7 +19,7 @@ final class UnitTest: XCTestCase {
                 var test3 = 1000 - 10
                 var test4 = 1000 * 10
                 var test5 = 1000 / 10
-                var test6 = 1000 % 10\n
+                var test6 = 1000 % 10
 """
             let expected: [Token] = [
                 .reservedWord(.let), .identifier("test"), .other(.equal), .number(1000),
@@ -143,6 +143,78 @@ final class UnitTest: XCTestCase {
         }
         
         XCTContext.runActivity(named: "other") { _ in
+            let sampleCode = """
+            // equal: `=`
+            var test = 10
+
+            // multiEqual: `==`
+            if test == 5 {
+               // plusEqual: `+=`
+               test += 1
+            }
+
+            // arrow: `->`
+            func testMethod() -> [Int] {
+              
+              // colon: `:`
+              let hoge: Int = 10
+
+              // comma: `,`
+              return [4, 5, 6]
+            }
+
+            // period section
+            enum Hoge {
+              case test1
+              case test2
+            }
+
+            func testHoge(hoge: Hoge) {
+               switch hoge {
+               // period: `.`
+               case .test1:
+                  print(test)
+               case .test2:
+                  print(test)
+               }
+            }
+"""
+            let expected: [Token] = [
+                // equal: `=`
+                .reservedWord(.var), .identifier("test"), .other(.equal), .number(10),
+                // multiEqual: `==`
+                .reservedWord(.if), .identifier("test"), .other(.multiEqual), .number(5), .curlyBlace(.left),
+                // plusEqual: `+=`
+                .identifier("test"), .other(.plusEqual), .number(1),
+                .curlyBlace(.right),
+                // arrow: `->`
+                .reservedWord(.func), .identifier("testMethod"), .roundBlacket(.left), .roundBlacket(.right), .other(.arrow), .squareBlacket(.left), .identifier("Int"), .squareBlacket(.right), .curlyBlace(.left),
+                // colon: `:`
+                .reservedWord(.let), .identifier("hoge"), .other(.colon), .identifier("Int"), .other(.equal), .number(10),
+                .reservedWord(.return), .squareBlacket(.left), .number(4), .other(.comma), .number(5), .other(.comma), .number(6), .squareBlacket(.right), .curlyBlace(.right),
+                // period section
+                .reservedWord(.enum), .identifier("Hoge"), .curlyBlace(.left),
+                .reservedWord(.case), .identifier("test1"),
+                .reservedWord(.case), .identifier("test2"),
+                .curlyBlace(.right),
+                .reservedWord(.func), .identifier("testHoge"), .roundBlacket(.left),
+                .identifier("hoge"), .other(.colon), .identifier("Hoge"), .roundBlacket(.right), .curlyBlace(.left),
+                // period: `.`
+                .identifier("switch"), .identifier("hoge"), .curlyBlace(.left),
+                .reservedWord(.case), .other(.period), .identifier("test1"), .other(.colon),
+                .identifier("print"), .roundBlacket(.left), .identifier("test"), .roundBlacket(.right),
+                .reservedWord(.case), .other(.period), .identifier("test2"), .other(.colon),
+                .identifier("print"), .roundBlacket(.left), .identifier("test"), .roundBlacket(.right),
+                .curlyBlace(.right),
+                .curlyBlace(.right),
+                .other(.eof)
+            ]
+            
+            let tokens = tokenize(input: sampleCode)
+            print("tokens \(tokens.count), expected \(expected.count)")
+            XCTAssertEqual(tokens.count, expected.count)
+            XCTAssertEqual(tokens, expected)
+            
         }
     }
 }
