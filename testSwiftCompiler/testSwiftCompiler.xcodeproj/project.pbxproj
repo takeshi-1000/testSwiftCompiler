@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		FB6FB38329DB765C003DE30D /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB6FB38229DB765C003DE30D /* main.swift */; };
 		FB6FB39229DB76A3003DE30D /* unitTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB6FB39129DB76A3003DE30D /* unitTest.swift */; };
+		FB6FB39729DBBD6D003DE30D /* parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB6FB39629DBBD6D003DE30D /* parser.swift */; };
 		FB6FB39A29DCED3B003DE30D /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB6FB38229DB765C003DE30D /* main.swift */; };
 /* End PBXBuildFile section */
 
@@ -29,6 +30,7 @@
 		FB6FB38229DB765C003DE30D /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		FB6FB38F29DB76A3003DE30D /* unitTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = unitTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FB6FB39129DB76A3003DE30D /* unitTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = unitTest.swift; sourceTree = "<group>"; };
+		FB6FB39629DBBD6D003DE30D /* parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = parser.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +73,7 @@
 			isa = PBXGroup;
 			children = (
 				FB6FB38229DB765C003DE30D /* main.swift */,
+				FB6FB39629DBBD6D003DE30D /* parser.swift */,
 			);
 			path = testSwiftCompiler;
 			sourceTree = "<group>";
@@ -172,6 +175,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FB6FB39729DBBD6D003DE30D /* parser.swift in Sources */,
 				FB6FB38329DB765C003DE30D /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
